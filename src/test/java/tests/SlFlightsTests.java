@@ -1,8 +1,5 @@
 package tests;
 
-import com.codeborne.selenide.logevents.SelenideLogger;
-import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pages.LoginPage;
 import pages.SearchPage;
@@ -10,12 +7,10 @@ import pages.ResultsPage;
 import pages.RegistrationPage;
 
 public class SlFlightsTests {
-    @BeforeAll
-    static void setUpAllure() { // <--- static оставляем, но меняем аннотацию на @BeforeAll
-        SelenideLogger.addListener("allure", new AllureSelenide()
-                .screenshots(true)
-                .savePageSource(true));
-    }
+
+    // ==========================================
+    // 1. АВТОРИЗАЦИЯ
+    // ==========================================
 
     @Test
     public void successfulLoginAndLogout() {
@@ -51,6 +46,10 @@ public class SlFlightsTests {
         loginPage.shouldHaveErrorMessage("Пользователь заблокирован");
     }
 
+    // ==========================================
+    // 2. ПОИСК И СОРТИРОВКА
+    // ==========================================
+
     @Test
     public void searchFlightAndSortByPrice() {
         new LoginPage().open().loginAs("standard_user", "stand_pass1");
@@ -62,6 +61,10 @@ public class SlFlightsTests {
         resultsPage.sortBy("price", "asc");
         resultsPage.shouldBeSortedByPriceAscending();
     }
+
+    // ==========================================
+    // 3. БРОНИРОВАНИЕ (РЕГИСТРАЦИЯ)
+    // ==========================================
 
     @Test
     public void checkRegistrationFormPrefilledData() {
